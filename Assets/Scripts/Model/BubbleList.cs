@@ -7,27 +7,23 @@ public class BubbleList : MonoBehaviour
 {
     public Transform startPosition;
     //public List<List<Bubble>> bubbleList;
-    public int baseWidth = 9;
-    public int baseHeight = 7;
-    public List<List<Bubble>> bubblePrefabs;
-    public Bubble GenBubble { get { return new Bubble(); } set { GenBubble = value; } }
+    public int baseWidth;
+    public int baseHeight;
+    public List<List<Bubble>> bubbleList;
+    //public Bubble GenBubble { get { return new Bubble(); } set { GenBubble = value; } }
 
     private void Awake()
     {
-        bubblePrefabs = new List<List<Bubble>>();
-        //bubbleList = new List<List<Bubble>>();
-    }
-
-    // Use this for initialization
-    void Start()
-    {
+        bubbleList = new List<List<Bubble>>();
         GenerateList();
         PositionBubbles();
     }
 
+    void Start()
+    {
 
+    }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
@@ -40,12 +36,14 @@ public class BubbleList : MonoBehaviour
     {
         for (int x = 0; x < baseWidth; x++)
         {
+            bubbleList.Add(new List<Bubble>());
+
             for (int y = 0; y < baseHeight; y++)
             {
-                bubblePrefabs.Add(new List<Bubble>());
-                Bubble tempBub = new Bubble();
-                tempBub.transform.parent = this.transform;
-                bubblePrefabs[x].Add(new Bubble());
+                Bubble bubble = Bubble.NewBubble();
+                bubbleList[x].Add(bubble);
+                bubbleList[x][y].transform.SetParent(this.transform);
+                //Destroy(tempBub);
             }
         }
     }
@@ -63,32 +61,40 @@ public class BubbleList : MonoBehaviour
 
                 float yMod = 7f / 8f;
 
-                bubblePrefabs[x][y].transform.position = new Vector3(this.transform.position.x + xMod, this.transform.position.y - (y * yMod), 0);
+                bubbleList[x][y].transform.position = new Vector3(this.transform.position.x + xMod, this.transform.position.y - (y * yMod), 0);
 
             }
         }
     }
 
-    bool RowHasBubbles(int row)
+    bool RowHasBubbles(int y)
     {
-        for(int x = 0; x < bubblePrefabs[x].Count; x++)
+        for(int x = 0; x < bubbleList[x].Count; x++)
         {
-            if (bubblePrefabs[x][row] != null)
+            if (bubbleList[x][y] != null)
                 return true;
         }
 
         return false;
     }
 
+    bool HasBubble(int x, int y)
+    {
+        if (bubbleList[x][y] != null)
+            return true;
+        else
+            return false;
+    }
+
     void AddTopRow()
     {
-        bubblePrefabs.Add(new List<Bubble>());
+        bubbleList.Add(new List<Bubble>());
 
         for (int x = baseWidth; x >= 0; --x)
         {
             for (int y = baseHeight; y >= 0; --y)
             {
-                bubblePrefabs[x + 1] = bubblePrefabs[x];
+                bubbleList[x][y + 1] = bubbleList[x][y];
             }
         }
 
@@ -99,58 +105,44 @@ public class BubbleList : MonoBehaviour
     {
         for (int x = 0; x < baseWidth; x++)
         {
-            bubblePrefabs[0].Add(new Bubble());
+            bubbleList[0].Add(Bubble.NewBubble());
         }
     }
 
-    void AddDiag()
+    void AddDiag() //This is probably a bad idea for a method LOL
     {
 
     }
 
     void AddBubble(int row, int column, Bubble bubble)
     {
-        bubblePrefabs[row][column] = bubble;
+        bubbleList[row][column] = bubble;
     }
 
     void AddBubble(int row, int column)
     {
-        bubblePrefabs[row][column] = GenBubble;
+        bubbleList[row][column] = ((GameObject)Instantiate(Resources.Load("Bubble"))).AddComponent<Bubble>();
     }
-
-    //void PositionBubbles()
-    //{
-    //    for (int x = 0; x < baseWidth; x++)
-    //    {
-    //        for (int y = 0; y < baseHeight; y++)
-    //        {
-    //            if (x % 2 == 1)
-    //                bubbleList[x][y].pos.localPosition = new Vector3(x, y, 0);
-    //            else
-    //                bubbleList[x][y].pos.localPosition = new Vector3(x + 1, y, 0);
-    //        }
-    //    }
-    //}
 
     void ChangeColor(Bubble.BubbleColor oldColor, Bubble.BubbleColor newColor)
     {
-        for (int x = 0; x < bubblePrefabs.Count; x++)
+        for (int x = 0; x < bubbleList.Count; x++)
         {
-            for (int y = 0; y < bubblePrefabs[x].Count; y++)
+            for (int y = 0; y < bubbleList[x].Count; y++)
             {
-                if (bubblePrefabs[x][y].GetComponent<Bubble>().color== oldColor)
-                    bubblePrefabs[x][y].GetComponent<Bubble>().color = newColor;
+                if (bubbleList[x][y].GetComponent<Bubble>().color== oldColor)
+                    bubbleList[x][y].GetComponent<Bubble>().color = newColor;
             }
         }
     }
 
     void SwapPositions(Vector2 bubblePosOne, Vector2 bubblePosTwo)
     {
-        Bubble refOne = bubblePrefabs[(int)bubblePosOne.x][(int)bubblePosOne.y];
-        Bubble refTwo = bubblePrefabs[(int)bubblePosTwo.x][(int)bubblePosTwo.y];
+        Bubble refOne = bubbleList[(int)bubblePosOne.x][(int)bubblePosOne.y];
+        Bubble refTwo = bubbleList[(int)bubblePosTwo.x][(int)bubblePosTwo.y];
 
-        bubblePrefabs[(int)bubblePosTwo.x][(int)bubblePosTwo.y] = refOne;
-        bubblePrefabs[(int)bubblePosOne.x][(int)bubblePosOne.y] = refTwo;
+        bubbleList[(int)bubblePosTwo.x][(int)bubblePosTwo.y] = refOne;
+        bubbleList[(int)bubblePosOne.x][(int)bubblePosOne.y] = refTwo;
     }
 
 }

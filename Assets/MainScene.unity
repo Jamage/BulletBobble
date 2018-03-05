@@ -110,34 +110,6 @@ NavMeshSettings:
     tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &48363696
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 48363697}
-  m_Layer: 0
-  m_Name: GridTransform
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &48363697
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 48363696}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &144572393
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,35 +378,14 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1767738173}
-  - component: {fileID: 1767738172}
   - component: {fileID: 1767738174}
   m_Layer: 0
-  m_Name: BubbleGrid
+  m_Name: BubbleList
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1767738172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1767738171}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3416cf648623944abbb557d5f4bc198, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startPosition: {fileID: 48363697}
-  baseWidth: 9
-  baseHeight: 7
-  bubblePrefabs:
-  - {fileID: 1786690387130668, guid: 7e041bf7fc1e5b743b6387d35dec60df, type: 2}
-  - {fileID: 1786690387130668, guid: 89ab8db81b0eaff4dab7d3babde13832, type: 2}
-  - {fileID: 1708064278175066, guid: bd61292f434efdb42bf4176dd46fa5a9, type: 2}
-  - {fileID: 1878965247082984, guid: fb37488482114d847aaa584ccc548283, type: 2}
-  - {fileID: 1786690387130668, guid: 2e02f82429e718e4da011d1cec76bbf1, type: 2}
 --- !u!4 &1767738173
 Transform:
   m_ObjectHideFlags: 0

@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
-    public GameObject bubbleObject;
+    //public GameObject bubbleObject;
     public Transform pos;
-    public Material bubbleMaterial;
     public string objectName;
+    public static int runNum = 0;
 
     public enum BubbleColor
     {
@@ -35,51 +35,47 @@ public class Bubble : MonoBehaviour
             {
                 case BubbleColor.Black:
                     objectName = "BlackBubble";
-                    gameObject.name = objectName;
-                    bubbleObject.GetComponent<Renderer>().material = (Material)Resources.Load("BlackBubbleMaterial");
-                    bubbleMaterial = bubbleObject.GetComponent<Renderer>().material;
-                    //view.GetComponent<Renderer>().material.color = new UnityEngine.Color(0, 0, 0, 255f);
+                    this.name = objectName;
+                    this.GetComponent<Renderer>().material = (Material)Resources.Load("BlackBubbleMaterial");
                     break;
                 case BubbleColor.Blue:
                     objectName = "BlueBubble";
-                    gameObject.name = objectName;
-                    bubbleObject.GetComponent<Renderer>().material = (Material)Resources.Load("BlueBubbleMaterial");
-                    bubbleMaterial = bubbleObject.GetComponent<Renderer>().material;
-                    //view.GetComponent<Renderer>().material.color = new UnityEngine.Color(0, 0, 255f, 255f);
+                    this.name = objectName;
+                    this.GetComponent<Renderer>().material = (Material)Resources.Load("BlueBubbleMaterial");
                     break;
                 case BubbleColor.Green:
                     objectName = "GreenBubble";
-                    gameObject.name = objectName;
-                    bubbleObject.GetComponent<Renderer>().material = (Material)Resources.Load("GreenBubbleMaterial");
-                    bubbleMaterial = bubbleObject.GetComponent<Renderer>().material;
-                    //view.GetComponent<Renderer>().material.color = new UnityEngine.Color(0, 255f, 0, 255f);
+                    this.name = objectName;
+                    this.GetComponent<Renderer>().material = (Material)Resources.Load("GreenBubbleMaterial");
                     break;
                 case BubbleColor.Red:
                     objectName = "RedBubble";
-                    gameObject.name = objectName;
-                    bubbleObject.GetComponent<Renderer>().material = (Material)Resources.Load("RedBubbleMaterial");
-                    bubbleMaterial = bubbleObject.GetComponent<Renderer>().material;
-                    //view.GetComponent<Renderer>().material.color = new UnityEngine.Color(255f, 0, 0, 255f);
+                    this.name = objectName;
+                    this.GetComponent<Renderer>().material = (Material)Resources.Load("RedBubbleMaterial");
                     break;
                 case BubbleColor.White:
                     objectName = "WhiteBubble";
-                    gameObject.name = objectName;
-                    bubbleObject.GetComponent<Renderer>().material = (Material)Resources.Load("WhiteBubbleMaterial");
-                    bubbleMaterial = bubbleObject.GetComponent<Renderer>().material;
-                    //view.GetComponent<Renderer>().material.color = new UnityEngine.Color(255f, 255f, 255f, 255f);
+                    this.name = objectName;
+                    this.GetComponent<Renderer>().material = (Material)Resources.Load("WhiteBubbleMaterial");
                     break;
             };
         }
     }
 
+    public static Bubble NewBubble()
+    {
+        return ((GameObject)Instantiate(Resources.Load("Bubble"))).AddComponent<Bubble>();
+    }
+
     void Awake()
     {
+        Debug.Log("Awake: " + runNum++);
         Setup();
     }
 
     private void Setup()
     {
-        bubbleObject = this.gameObject;
+        //this.gameObject = Instantiate(Resources.Load("Bubble") as GameObject);
         color = GetRandomEnum<Bubble.BubbleColor>();
     }
 
