@@ -6,11 +6,10 @@ using UnityEngine;
 public class BubbleList : MonoBehaviour
 {
     public Transform startPosition;
-    //public List<List<Bubble>> bubbleList;
     public int baseWidth;
     public int baseHeight;
     public List<List<Bubble>> bubbleList;
-    //public Bubble GenBubble { get { return new Bubble(); } set { GenBubble = value; } }
+    int vertOffset = 0;
 
     private void Awake()
     {
@@ -43,23 +42,21 @@ public class BubbleList : MonoBehaviour
                 Bubble bubble = Bubble.NewBubble();
                 bubbleList[x].Add(bubble);
                 bubbleList[x][y].transform.SetParent(this.transform);
-                //Destroy(tempBub);
             }
         }
     }
 
     private void PositionBubbles()
     {
+        float yMod = 7f / 8f;
+        float xMod = 0f;
+
         for (int x = 0; x < bubbleList.Count; x++)
         {
             for (int y = 0; y < bubbleList[x].Count; y++)
             {
-                //GameObject tempGO = Instantiate(Resources.Load(bubbleList[y][x].objectName), new Vector3(this.transform.position.x + x, this.transform.position.y - y, 0), Quaternion.identity) as GameObject;
-                float xMod = x;
                 if (y % 2 == 1)
                     xMod = x + .5f;
-
-                float yMod = 7f / 8f;
 
                 bubbleList[x][y].transform.position = new Vector3(this.transform.position.x + xMod, this.transform.position.y - (y * yMod), 0);
 
