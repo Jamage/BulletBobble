@@ -50,9 +50,9 @@ public class BubbleList : MonoBehaviour
 
     private void PositionBubbles()
     {
-        for (int x = 0; x < baseWidth; x++)
+        for (int x = 0; x < bubbleList.Count; x++)
         {
-            for (int y = 0; y < baseHeight; y++)
+            for (int y = 0; y < bubbleList[x].Count; y++)
             {
                 //GameObject tempGO = Instantiate(Resources.Load(bubbleList[y][x].objectName), new Vector3(this.transform.position.x + x, this.transform.position.y - y, 0), Quaternion.identity) as GameObject;
                 float xMod = x;
@@ -86,26 +86,29 @@ public class BubbleList : MonoBehaviour
             return false;
     }
 
+    //Configuration of the Grid needs to change with every added line... The positions move left/right currently depending on row
     void AddTopRow()
     {
-        bubbleList.Add(new List<Bubble>());
-
-        for (int x = baseWidth; x >= 0; --x)
+        for (int x = 0; x < baseWidth; x++)
         {
-            for (int y = baseHeight; y >= 0; --y)
+            bubbleList[x].Add(bubbleList[x][bubbleList[x].Count - 1]);
+
+            for (int y = bubbleList[x].Count - 2; y >= 0; y--)
             {
                 bubbleList[x][y + 1] = bubbleList[x][y];
             }
         }
 
         AddRow(0);
+        PositionBubbles();
     }
 
     void AddRow(int rowNum)
     {
         for (int x = 0; x < baseWidth; x++)
         {
-            bubbleList[0].Add(Bubble.NewBubble());
+            bubbleList[x][rowNum] = Bubble.NewBubble();
+            bubbleList[x][rowNum].transform.parent = this.transform;
         }
     }
 
