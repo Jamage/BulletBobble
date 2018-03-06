@@ -412,7 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {fileID: 1767738173}
   baseWidth: 9
-  baseHeight: 8
+  baseHeight: 5
 --- !u!1 &2141761370
 GameObject:
   m_ObjectHideFlags: 0
