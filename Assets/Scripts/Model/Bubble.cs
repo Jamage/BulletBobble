@@ -8,7 +8,7 @@ public class Bubble : MonoBehaviour
     //public GameObject bubbleObject;
     public Transform pos;
     public string objectName;
-    public static int runNum = 0;
+    private BubbleColor color;
 
     public enum BubbleColor
     {
@@ -25,12 +25,14 @@ public class Bubble : MonoBehaviour
         Bomb,
         ColorClear
     }
-
-    public BubbleColor color
+    
+    public BubbleColor Color
     {
-        get { return GetRandomEnum<BubbleColor>(); } 
+        get { return color; } 
         set
         {
+            color = value;
+
             switch (value)
             {
                 case BubbleColor.Black:
@@ -69,52 +71,21 @@ public class Bubble : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log("Awake: " + runNum++);
         Setup();
     }
 
     private void Setup()
     {
-        //this.gameObject = Instantiate(Resources.Load("Bubble") as GameObject);
-        color = GetRandomEnum<Bubble.BubbleColor>();
+        Color = Utility.GetRandomEnum<Bubble.BubbleColor>();
     }
-
-    //public Bubble()
-    //{
-    //    color = GetRandomEnum<Bubble.Color>();
-    //}
-
-    public T GetRandomEnum<T>()
-    {
-        Array values = Enum.GetValues(typeof(T));
-        int num = (int)UnityEngine.Random.Range(0, values.Length);
-        return (T)values.GetValue(num);
-    }
-
-    //public Bubble(Color bubbleColor)
-    //{
-    //    color = bubbleColor;
-    //}
-
-    //private void Awake()
-    //{
-    //    view = this.gameObject;
-    //}
-
-    //void Start()
-    //{
-    //Bubble bubble = new Bubble();
-    //Debug.Log("Bubble color: " + bubble.color.ToString());
-    //}
-
 
     public void ChangeColor(BubbleColor newColor)
     {
-        color = newColor;
+        Color = newColor;
     }
 
-    public void ChangeColor()
+    public void RandomizeColor()
     {
-        color = GetRandomEnum<Bubble.BubbleColor>();
+        Color = Utility.GetRandomEnum<Bubble.BubbleColor>();
     }
 }

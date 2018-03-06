@@ -130,8 +130,8 @@ public class BubbleList : MonoBehaviour
         {
             for (int y = 0; y < bubbleList[x].Count; y++)
             {
-                if (bubbleList[x][y].GetComponent<Bubble>().color== oldColor)
-                    bubbleList[x][y].GetComponent<Bubble>().color = newColor;
+                if (bubbleList[x][y].GetComponent<Bubble>().Color== oldColor)
+                    bubbleList[x][y].GetComponent<Bubble>().Color = newColor;
             }
         }
     }
