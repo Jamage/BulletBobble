@@ -15,7 +15,8 @@ public class Utility : MonoBehaviour {
     public static IEnumerator MovementTransition(Transform start, Transform end, float timespan = 1f) {
         float time = 0;
         while (time < timespan) {
-            Vector3.Lerp(start, end, (time += Time.deltaTime) / timespan);
+            Vector3.Lerp(start.position, end.position, (time += Time.deltaTime) / timespan);
+            yield return null;
         }
     }
 }
