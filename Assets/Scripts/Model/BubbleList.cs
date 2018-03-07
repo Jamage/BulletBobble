@@ -9,7 +9,7 @@ public class BubbleList : MonoBehaviour
     public int baseWidth;
     public int baseHeight;
     public List<List<Bubble>> bubbleList;
-    int vertOffset = 0;
+    bool alignedLeft = false;
 
     private void Awake()
     {
@@ -29,6 +29,88 @@ public class BubbleList : MonoBehaviour
         {
             AddTopRow();
         }
+
+        if (Input.GetMouseButton(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray, out hit))
+            {
+                Bubble bubble = hit.collider.GetComponent<Bubble>();
+                Vector2 position = FindPosition(bubble);
+                PopCluster(bubble, position);
+            }
+            
+        }
+    }
+
+    private void PopCluster(Bubble bubble, Vector2 position)
+    {
+        List<Bubble> cluster = StartFindCluster(bubble, position);
+    }
+
+    public enum LastDirection
+    {
+        None,
+        Left,
+        Right,
+        Up,
+        Down
+    }
+
+    //Create recursive method sequence
+    //Has START, which runs Left, Right, Up, Down searches if possible
+    //If bubble found, run Start with it.
+    //Need safeguards to ensure that the same bubble isn't being covered. Store list of positions to avoid? Pass cluster list to check if the object already exists?
+    private List<Bubble> StartFindCluster(Bubble bubble, Vector2 position, LastDirection lastDir = LastDirection.None)
+    {
+        List<Bubble> cluster = new List<Bubble>();
+        int x = (int)position.x;
+        int y = (int)position.y;
+
+        //right
+        if(lastDir != LastDirection.Left)
+        if (bubbleList[x + 1][y].Color == bubble.Color)
+        {
+            cluster.Add(bubbleList[x + 1][y]);
+            cluster.AddRange(StartFindCluster(bubbleList[x + 1][y], new Vector2(x + 1, y)));
+        }
+        //left
+        if(lastDir != LastDirection.Right)
+        if(bubbleList[x - 1][y].Color == bubble.Color)
+        {
+            cluster.Add(bubbleList[x - 1][y]);
+            cluster.AddRange(StartFindCluster(bubbleList[x - 1][y], new Vector2(x - 1, y)));
+
+        }
+        //up
+        if(lastDir != LastDirection.Down)
+        if(bubbleList[x][y + 1].Color == bubble.Color)
+        {
+            cluster.Add(bubbleList[x][y + 1]);
+            cluster.AddRange(StartFindCluster(bubbleList[x][y + 1], new Vector2(x, y + 1)));
+        }
+        //down
+        if(lastDir != LastDirection.Up)
+        if(bubbleList[x][y - 1].Color == bubble.Color)
+        {
+            cluster.Add(bubbleList[x][y - 1]);
+            cluster.AddRange(StartFindCluster(bubbleList[x][y - 1], new Vector2(x, y - 1)));
+        }
+        return cluster;
+    }
+
+    private Vector2 FindPosition(Bubble bubble)
+    {
+        for (int x = 0; x < bubbleList.Count; x++)
+        {
+            for (int y = 0; y < bubbleList[x].Count; y++)
+            {
+                if (bubbleList[x][y] == bubble)
+                    return new Vector2(x, y);
+            }
+        }
+        return new Vector2();
     }
 
     void GenerateList()
@@ -48,18 +130,21 @@ public class BubbleList : MonoBehaviour
 
     private void PositionBubbles()
     {
+        float xMod;
         float yMod = 7f / 8f;
-        float xMod = 0f;
 
         for (int x = 0; x < bubbleList.Count; x++)
         {
             for (int y = 0; y < bubbleList[x].Count; y++)
             {
-                if (y % 2 == 1)
+                int modCheck = y + (alignedLeft == true ? 1 : 0);
+
+                if (modCheck % 2 == 1)
                     xMod = x + .5f;
+                else
+                    xMod = x;
 
                 bubbleList[x][y].transform.position = new Vector3(this.transform.position.x + xMod, this.transform.position.y - (y * yMod), 0);
-
             }
         }
     }
@@ -97,7 +182,16 @@ public class BubbleList : MonoBehaviour
         }
 
         AddRow(0);
+        ToggleAlignment();
         PositionBubbles();
+    }
+
+    private void ToggleAlignment()
+    {
+        if (alignedLeft)
+            alignedLeft = false;
+        else
+            alignedLeft = true;
     }
 
     void AddRow(int rowNum)
